@@ -34,7 +34,6 @@ export default {
   methods: {
     async init() {
       let res = await this.$http.get("rest/articles");
-      console.log(res.data)
       this.tableData = res.data;
     },
     handleEdit(index, row) {

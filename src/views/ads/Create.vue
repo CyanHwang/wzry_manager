@@ -18,7 +18,8 @@
             <el-form-item>
               <el-upload
                 class="avatar-uploader"
-                :action="$http.defaults.baseURL + 'upload'"
+                :action="uploadUrl"
+                :headers="getAuthHeaders()"
                 :show-file-list="false"
                 :on-success="(res) => $set(item, 'image', res.url)"
               >
@@ -62,7 +63,6 @@ export default {
           type: "success",
           message: `新建成功 >> ${this.model.name} << `,
         });
-        // console.log(res);
       } else {
         let res = await this.$http.put(`rest/ads/${this.id}`, this.model);
         this.$router.push("/ads");
@@ -74,7 +74,6 @@ export default {
     },
     async init() {
       let res = await this.$http.get(`rest/ads/${this.id}`);
-      console.log(res);
       this.model = res.data;
     },
     async initParents() {

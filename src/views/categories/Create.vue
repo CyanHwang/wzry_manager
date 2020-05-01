@@ -37,7 +37,6 @@ export default {
           type: "success",
           message: `新建成功 >> ${this.model.name} << `,
         });
-        // console.log(res);
       } else {
         let res = await this.$http.put(`rest/categories/${this.id}`, this.model);
         this.$router.push("/categories");
@@ -49,7 +48,6 @@ export default {
     },
     async init() {
       let res = await this.$http.get(`rest/categories/${this.id}`);
-      console.log(res);
       this.model = res.data;
     },
     async initParents(){

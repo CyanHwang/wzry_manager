@@ -2,18 +2,14 @@
   <div>
     <h1>{{ id ? "编辑" : "新建" }}物品</h1>
     <el-form label-width="120px" @submit.native.prevent="save">
-      <!-- <el-form-item label="上级分类">
-        <el-select v-model='model.parent'>
-          <el-option v-for="item in parents" :key="item._id" :label="item.name" :value="item._id" />
-        </el-select>
-      </el-form-item> -->
       <el-form-item label="物品名称">
         <el-input v-model="model.name" />
       </el-form-item>
       <el-form-item label="图标">
         <el-upload
           class="avatar-uploader"
-          :action="$http.defaults.baseURL + 'upload'"
+          :action="uploadUrl"
+          :headers="getAuthHeaders()"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
         >
@@ -47,7 +43,6 @@ export default {
           type: "success",
           message: `新建成功 >> ${this.model.name} << `,
         });
-        // console.log(res);
       } else {
         let res = await this.$http.put(`rest/items/${this.id}`, this.model);
         this.$router.push("/items");
@@ -59,7 +54,6 @@ export default {
     },
     async init() {
       let res = await this.$http.get(`rest/items/${this.id}`);
-      console.log(res);
       this.model = res.data;
     },
     handleAvatarSuccess(res){

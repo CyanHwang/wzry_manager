@@ -1,26 +1,34 @@
-import Vue from 'vue'
-import axios from 'axios'
+import Vue from "vue";
+import axios from "axios";
+import router from "./router/index";
 
- const http = axios.create({
-     baseURL:'http://localhost:3000/admin/api/'
- })
+const http = axios.create({
+  baseURL: "http://localhost:3000/admin/api/",
+});
 
- http.interceptors.request.use(config=> {
-     config.headers.Authorization = 'Bearer '+ localStorage.token
+http.interceptors.request.use(
+  (config) => {
+    config.headers.Authorization = "Bearer " + (localStorage.token || "");
     return config;
-  }, error=> {
+  },
+  (error) => {
     return Promise.reject(error);
-  });
+  }
+);
 
- http.interceptors.response.use(response=>{
-     return response
- },error=>{
-     if(error.response.data.message){
-        Vue.prototype.$message({
-            type:'error',
-            message:error.response.data.message
-        })
-     }
- })
+http.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.data.message) {
+      Vue.prototype.$message({
+        type: "error",
+        message: error.response.data.message,
+      });
+      router.push("/login");
+    }
+  }
+);
 
- export default http;
+export default http;

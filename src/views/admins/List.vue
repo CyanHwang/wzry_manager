@@ -28,7 +28,6 @@ export default {
   methods: {
     async init() {
       let res = await this.$http.get("rest/admins");
-      console.log(res.data)
       this.tableData = res.data;
     },
     handleEdit(index, row) {

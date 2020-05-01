@@ -6,8 +6,12 @@ import Login from "../views/Login.vue";
 
 Vue.use(VueRouter);
 
-const routes = [
-  {path:'/login',name:"Login",component:Login},
+
+const router = new VueRouter({
+  mode: "history",
+  base: process.env.BASE_URL,
+  routes:[
+  {path:'/login',name:"Login",component:Login,meta:{isPublic:true}},
   {
     path: "/",
     component: Home,
@@ -104,13 +108,14 @@ const routes = [
       },
       //Admins End
     ],
-  },
-];
+  }]
+})
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
-  routes,
-});
+router.beforeEach((to,from,next)=>{
+  if(!to.meta.isPublic && !localStorage.token){
+    return next('/login')
+  }
+  next();
+})
 
 export default router;
